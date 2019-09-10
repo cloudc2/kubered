@@ -1,0 +1,3 @@
+This software is open source, please feel free to add and change features, but if you do, please submit pull requests. You must also agree not to be a dick and do illegal things, this software is meant to make legal red teaming easier. Also I used the Hatecrack script from trustedsec as the basis for this script.
+
+If you really like this software and you see the authors in a bar, you should offer to buy them a drink of their choice.

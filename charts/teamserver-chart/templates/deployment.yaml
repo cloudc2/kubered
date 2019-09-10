@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+  namespace: {{ .Values.default }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      securityContext:
+        runAsUser: 0
+      imagePullSecrets:
+        - name: {{ .Values.pullSecret }}
+      containers:
+        - name: {{ .Release.Name }}
+          image: {{ .Values.image }}:{{ .Values.tag }}
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: {{ .Release.Name }}-{{ .Values.malConfig }}
+              mountPath: {{ .Values.malc2path }}
+              subPath: {{ .Values.subpath }}
+          ports:
+            - containerPort: 80
+            - containerPort: 50050
+          env:
+            - name: COBALT_PASSWD
+              value: {{ .Values.password | quote }}
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: MAL_C2_PATH
+              value: {{ .Values.malc2path | quote }}
+          args: ["$(MY_POD_IP)", "$(COBALT_PASSWD)", $(MAL_C2_PATH)]
+      volumes:
+        - name: {{ .Release.Name }}-{{ .Values.malConfig }}
+          configMap:
+            name: {{ .Release.Name }}-{{ .Values.malConfig }}

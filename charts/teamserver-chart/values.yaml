@@ -1,0 +1,8 @@
+namespace: default
+pullSecret: regcred
+image: larrysuto/teamserver
+tag: teamserver-cs-ub18-1.0
+malc2path: /opt/cobaltstrike/profiles/randomized.profile
+subpath: randomized.profile
+password: xyz4321@!
+malConfig: malc2

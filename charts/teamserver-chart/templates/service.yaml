@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-service
+  namespace: {{ .Values.default }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  ports:
+    - port: 80
+      name: c2
+      protocol: TCP
+    - port: 50050
+      name: admin
+      protocol: TCP
+  selector:
+    app: {{ .Release.Name }}

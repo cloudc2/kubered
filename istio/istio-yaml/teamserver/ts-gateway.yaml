@@ -1,0 +1,22 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: teamserver-gateway
+  namespace: default
+spec:
+  selector:
+    istio: ingressgateway
+  #    app: teamserver-gateway-controller
+  servers:
+    - port:
+        number: 80
+        name: http-system
+        protocol: HTTP
+      hosts:
+        - "*"
+    - port:
+        number: 50050 # exposes teamserver admin port
+        name: tcp-admin
+        protocol: TCP
+      hosts:
+        - "*"

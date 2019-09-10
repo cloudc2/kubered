@@ -1,0 +1,20 @@
+{
+  "cloudProvider": "aws",
+  "awscliPath": "/path/to/aws",
+  "kopsPath": "/path/to/kops",
+  "kubectlPath": "/path/to/kubectl",
+  "sshPublicKey": "/path/to/sshPublickey",
+  "ingressEngine": "nginx",
+  "S3BucketName": "S3BucketName",
+  "AWSZone": "us-west-2a, us-west-2b",
+  "AWSMasterSize": "t3.micro",
+  "AWSNodeSize": "t3.large",
+  "AWSNetworking": "calico",
+  "AWSTopology": "private",
+  "HACluster": "No",
+  "gossipBasedCluster": "yes",
+  "masterCount": "1",
+  "dockerHubUserName": "user",
+  "dockerHubPassword": "password",
+  "dockerEmail": "emaill@domain.net"
+}

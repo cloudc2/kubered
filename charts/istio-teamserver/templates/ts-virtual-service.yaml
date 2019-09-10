@@ -1,0 +1,17 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: admin-virtualservice
+  namespace: default
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - {{ .Release.Name }}-gateway
+  http:
+    - match:
+        - uri:
+            prefix: {{ .Values.prefix | quote }}
+      route:
+        - destination:
+            host: {{ .Release.Name }}-service

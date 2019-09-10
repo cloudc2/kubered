@@ -1,0 +1,17 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: admin-virtual-service
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - teamserver-gateway
+  tcp:
+    - match:
+        - port: 50050
+      route:
+        - destination:
+            host: teamserver1-service
+            port:
+              number: 50050

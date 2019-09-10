@@ -1,0 +1,6 @@
+kubectl create secret docker-registry $SECRETNAME \
+  --docker-username=$USERNAME \
+  --docker-password=$PW \
+  --docker-email=$EMAIL
+
+
