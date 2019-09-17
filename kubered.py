@@ -6,7 +6,7 @@ import sys
 import os
 import json
 import shutil
-import yaml
+#import yaml
 import time
 
 
@@ -101,19 +101,19 @@ def name_cluster():
         return clusterName
 
 
-def yaml_as_python(val):
-    try:
-        return yaml.load_all(val)
-    except yaml.YAMLError as exc:
-        return exc
+#def yaml_as_python(val):
+#    try:
+#        return yaml.load_all(val)
+#    except yaml.YAMLError as exc:
+#        return exc
 
 
-def external_dns():
+#def external_dns():
     with open('DeployFiles/externalDNS.tpl', 'r') as input_file:
         results = yaml_as_python(input_file)
-        print results
+        print(results)
         for value in results:
-            print value
+            print(value)
 
 
 def change_config():
@@ -187,7 +187,7 @@ def deploy_c2():
         process9.wait()
     except KeyboardInterrupt:
         process9.kill()
-    print"finished!!\n"
+    print("finished!!\n")
 
 def create_cluster():
     global clusterName
@@ -262,7 +262,7 @@ def delete_cluster():
 
 #do any cleanup needed
 def cleanup():
-    print "cleanup\n"
+    print("cleanup\n")
 
 
 # Show README
