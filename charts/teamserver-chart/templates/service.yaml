@@ -13,5 +13,8 @@ spec:
     - port: 50050
       name: admin
       protocol: TCP
+    - port: 443
+      name: listener1
+      protocol: TCP
   selector:
     app: {{ .Release.Name }}

@@ -1,0 +1,17 @@
+replicaCount: 1
+
+namespace: default
+
+image:
+  repository: larrysuto/merlin
+  tag: merlinserver-1.0
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 443 
+
+password: xyz346HK
+range: 0.0.0.0
+
+

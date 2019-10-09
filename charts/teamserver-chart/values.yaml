@@ -6,3 +6,4 @@ malc2path: /opt/cobaltstrike/profiles/randomized.profile
 subpath: randomized.profile
 password: xyz4321@!
 malConfig: malc2
+tlsPort: 443

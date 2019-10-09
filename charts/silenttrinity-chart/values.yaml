@@ -1,0 +1,18 @@
+replicaCount: 1
+
+namespace: default
+
+image:
+  repository: larrysuto/silenttrinity
+  tag: st-docker-v1
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 5000
+  listener1: 443
+
+password: xyz346HK
+range: 0.0.0.0
+
+

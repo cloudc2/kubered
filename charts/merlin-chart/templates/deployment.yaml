@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Release.Name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          tty: true
+          stdin: true
+          volumeMounts:
+            - name: merlin-storage
+              mountPath: /merlin/cmd/merlinserver/data/temp
+            - name: merlin1-ssl
+              mountPath: "/merlin/cmd/merlinserver/data/x509"
+              readOnly: true
+          ports:
+            - containerPort: 443
+          env:
+            - name: PASSWORD
+              value: {{ .Values.password | quote }}
+            - name: RANGE
+              value: {{ .Values.range  | quote }}
+          args: ["-psk", "$(PASSWORD)", "-i", "$(RANGE)"]
+      volumes:
+        - name: merlin-storage
+          emptyDir: {}
+        - name: merlin1-ssl
+          secret:
+            secretName: merlin1-ssl

@@ -28,6 +28,7 @@ spec:
           ports:
             - containerPort: 80
             - containerPort: 50050
+            - containerPort: 443
           env:
             - name: COBALT_PASSWD
               value: {{ .Values.password | quote }}
