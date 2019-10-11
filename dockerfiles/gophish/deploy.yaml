@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gophish
+  labels:
+    app: gophish
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gophish
+  template:
+    metadata:
+      labels:
+        app: gophish
+    spec:
+      containers:
+      - name: gophish
+        image: larrysuto/gophish:gophish-kr
+        ports:
+        - containerPort: 80

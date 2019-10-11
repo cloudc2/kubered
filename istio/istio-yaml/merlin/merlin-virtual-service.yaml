@@ -1,0 +1,17 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: merlin-virtual-service
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - merlin-gateway
+  tcp:
+    - match:
+        - port: 443
+      route:
+        - destination:
+            host: merlin1-service
+            port:
+              number: 443

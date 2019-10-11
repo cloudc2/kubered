@@ -75,7 +75,7 @@ $$  $$<  $$ |  $$ |$$ |  $$ |$$$$$$$$ |$$ |  \__|$$$$$$$$ |$$ /  $$ |
 $$ |\$$\ $$ |  $$ |$$ |  $$ |$$   ____|$$ |      $$   ____|$$ |  $$ |
 $$ | \$$\\$$$$$$  |$$$$$$$  |\$$$$$$$\ $$ |      \$$$$$$$\ \$$$$$$$ |
 \__|  \__|\______/ \_______/  \_______|\__|       \_______| \_______|
-                          Version 0.01
+                          Version 0.5
   """)
 
 
@@ -100,14 +100,6 @@ def name_cluster():
         clusterName = input("\nEnter Cluster Name:")
         return clusterName
 
-
-#def yaml_as_python(val):
-#    try:
-#        return yaml.load_all(val)
-#    except yaml.YAMLError as exc:
-#        return exc
-
-
 #def external_dns():
     with open('DeployFiles/externalDNS.tpl', 'r') as input_file:
         results = yaml_as_python(input_file)
@@ -126,9 +118,9 @@ def get_elb():
     elbName = json_parser['uid']
     print(elbName)
 
-
-def deploy_c2():
-    process1 = subprocess.Popen("kubectl apply -f istio/istio-1.2.5/install/kubernetes/helm/helm-service-account.yaml", shell=True)
+def bootstrap_cluster():
+    process1 = subprocess.Popen("kubectl apply -f istio/istio-1.3.2/install/kubernetes/helm/helm-service-account.yaml",
+                                shell=True)
     try:
         process1.wait()
     except KeyboardInterrupt:
@@ -140,13 +132,17 @@ def deploy_c2():
     except KeyboardInterrupt:
         process2.kill()
     time.sleep(15)
-    process3 = subprocess.Popen("helm install istio/istio-1.2.5/install/kubernetes/helm/istio-init --name istio-init --namespace istio-system", shell=True)
+    process3 = subprocess.Popen(
+        "helm install istio/istio-1.3.2/install/kubernetes/helm/istio-init --name istio-init --namespace istio-system",
+        shell=True)
     try:
         process3.wait()
     except KeyboardInterrupt:
         process3.kill()
     time.sleep(15)
-    process4 = subprocess.Popen("helm install istio/istio-1.2.5/install/kubernetes/helm/istio --name istio --namespace istio-system --values istio/istio-1.2.5/install/kubernetes/helm/istio/values-istio-demo.yaml", shell=True)
+    process4 = subprocess.Popen(
+        "helm install istio/istio-1.3.2/install/kubernetes/helm/istio --name istio --namespace istio-system --values istio/istio-1.3.2/install/kubernetes/helm/istio/values-istio-demo.yaml",
+        shell=True)
     try:
         process4.wait()
     except KeyboardInterrupt:
@@ -158,6 +154,8 @@ def deploy_c2():
     except KeyboardInterrupt:
         process5.kill()
     time.sleep(15)
+
+def deploy_cobalt():
     process6 = subprocess.Popen(
         "kubectl create secret docker-registry {secret_name} --docker-username={user_name} "
         "--docker-password={docker_pass} --docker-email={docker_email}".format(
@@ -188,6 +186,56 @@ def deploy_c2():
     except KeyboardInterrupt:
         process9.kill()
     print("finished!!\n")
+
+
+def deploy_merlin():
+    process7 = subprocess.Popen("helm install charts/merlin-chart --name=merlin1", shell=True)
+    try:
+        process7.wait()
+    except KeyboardInterrupt:
+        process7.kill()
+    time.sleep(15)
+    process8 = subprocess.Popen("kubectl apply -f istio/istio-yaml/merlin/merlin-gateway.yaml", shell=True)
+    try:
+        process8.wait()
+    except KeyboardInterrupt:
+        process8.kill()
+    time.sleep(15)
+    process9 = subprocess.Popen("kubectl apply -f istio/istio-yaml/merlin/merlin-virtual-service.yaml", shell=True)
+    try:
+        process9.wait()
+    except KeyboardInterrupt:
+        process9.kill()
+    print("finished!!\n")
+
+def deploy_silent():
+    process7 = subprocess.Popen("helm install charts/silenttrinity-chart --name=silenttrinity1", shell=True)
+    try:
+        process7.wait()
+    except KeyboardInterrupt:
+        process7.kill()
+    time.sleep(15)
+    process8 = subprocess.Popen("kubectl apply -f istio/istio-yaml/silenttrinity/silenttrinity-gateway.yaml", shell=True)
+    try:
+        process8.wait()
+    except KeyboardInterrupt:
+        process8.kill()
+    time.sleep(15)
+    process9 = subprocess.Popen("kubectl apply -f istio/istio-yaml/teamserver/silenttrinity-virtual-service.yaml", shell=True)
+    try:
+        process9.wait()
+    except KeyboardInterrupt:
+        process9.kill()
+    print("finished!!\n")
+
+
+def deploy_gophish():
+    print("deploying Gophish\n")
+    process1 = subprocess.Popen("kubectl apply -f dockerfiles/gophish/deploy.yaml", shell=True)
+    try:
+        process1.wait()
+    except KeyboardInterrupt:
+        process1.kill()
 
 def create_cluster():
     global clusterName
@@ -235,6 +283,12 @@ def cluster_status():
         print('Killing PID {0}...'.format(str(kopsProcess.pid)))
         kopsProcess.kill()
 
+def list_pods():
+    process1 = subprocess.Popen("kubectl get pods --show-labels", shell=True)
+    try:
+        process1.wait()
+    except KeyboardInterrupt:
+        process1.kill()
 
 def delete_cluster():
     global clusterName
@@ -286,19 +340,29 @@ def main():
     try:
         while 1:
             print("\n\t(1) Change config values")
-            print("\n\t(20) Name Cluster")
-            print("\t(21) Deploy Cluster")
-            print("\t(22) Check Cluster Status")
-            print("\t(23) Deploy C2")
-            print("\t(24) Delete Cluster")
+            print("\n\t(10) Name Cluster")
+            print("\t(11) Deploy Cluster")
+            print("\t(12) Check Cluster Status")
+            print("\t(13) List Pods in Cluster")
+            print("\t(14) Delete Cluster")
+            print("\n\t(20) Bootstrap Cluster")
+            print("\n\t(30) Deploy Cobalt Strike")
+            print("\t(31) Deploy Merlin")
+            print("\t(32) Deploy Silent Trinity")
+            print("\n\t(40) Deploy Gophish")
             print("\n\t(98) Display README")
             print("\t(99) Quit")
             options = {"1": change_config,
-                       "20": name_cluster,
-                       "21": create_cluster,
-                       "22": cluster_status,
-                       "23": deploy_c2,
-                       "24": delete_cluster,
+                       "10": name_cluster,
+                       "11": create_cluster,
+                       "12": cluster_status,
+                       "13": list_pods,
+                       "14": delete_cluster,
+                       "20": bootstrap_cluster,
+                       "30": deploy_cobalt,
+                       "31": deploy_merlin,
+                       "32": deploy_silent,
+                       "40": deploy_gophish,
                        "98": show_readme,
                        "99": quit_kr
                        }

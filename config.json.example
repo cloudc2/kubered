@@ -7,7 +7,7 @@
   "ingressEngine": "nginx",
   "S3BucketName": "S3BucketName",
   "AWSZone": "us-west-2a, us-west-2b",
-  "AWSMasterSize": "t3.micro",
+  "AWSMasterSize": "t3.small",
   "AWSNodeSize": "t3.large",
   "AWSNetworking": "calico",
   "AWSTopology": "private",
@@ -16,5 +16,6 @@
   "masterCount": "1",
   "dockerHubUserName": "user",
   "dockerHubPassword": "password",
-  "dockerEmail": "emaill@domain.net"
+  "dockerEmail": "emaill@domain.net",
+  "Defaultc2": "cobaltstrike"
 }
