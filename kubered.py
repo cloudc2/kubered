@@ -221,13 +221,32 @@ def deploy_silent():
     except KeyboardInterrupt:
         process8.kill()
     time.sleep(15)
-    process9 = subprocess.Popen("kubectl apply -f istio/istio-yaml/teamserver/silenttrinity-virtual-service.yaml", shell=True)
+    process9 = subprocess.Popen("kubectl apply -f istio/istio-yaml/silenttrinity/silenttrinity-virtual-service.yaml", shell=True)
     try:
         process9.wait()
     except KeyboardInterrupt:
         process9.kill()
     print("finished!!\n")
 
+def deploy_covenant():
+    process7 = subprocess.Popen("helm install charts/covenant-chart --name=covenant1", shell=True)
+    try:
+        process7.wait()
+    except KeyboardInterrupt:
+        process7.kill()
+    time.sleep(15)
+    process8 = subprocess.Popen("kubectl apply -f istio/istio-yaml/covenant/covenant-gateway.yaml", shell=True)
+    try:
+        process8.wait()
+    except KeyboardInterrupt:
+        process8.kill()
+    time.sleep(15)
+    process9 = subprocess.Popen("kubectl apply -f istio/istio-yaml/covenant/covenant-virtual-service.yaml", shell=True)
+    try:
+        process9.wait()
+    except KeyboardInterrupt:
+        process9.kill()
+    print("finished!!\n")
 
 def deploy_gophish():
     print("deploying Gophish\n")
@@ -349,6 +368,7 @@ def main():
             print("\n\t(30) Deploy Cobalt Strike")
             print("\t(31) Deploy Merlin")
             print("\t(32) Deploy Silent Trinity")
+            print("\t(33) Deploy Covenant")
             print("\n\t(40) Deploy Gophish")
             print("\n\t(98) Display README")
             print("\t(99) Quit")
@@ -362,6 +382,7 @@ def main():
                        "30": deploy_cobalt,
                        "31": deploy_merlin,
                        "32": deploy_silent,
+                       "33": deploy_covenant,
                        "40": deploy_gophish,
                        "98": show_readme,
                        "99": quit_kr

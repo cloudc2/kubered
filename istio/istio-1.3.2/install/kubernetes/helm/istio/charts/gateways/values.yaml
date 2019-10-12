@@ -177,6 +177,10 @@ istio-egressgateway:
     name: http2
   - port: 443
     name: https
+  - port: 50050
+    name: teamserver-admin
+  - port: 7443
+    name: covenient-admin
     # This is the port where sni routing happens
   - port: 15443
     targetPort: 15443

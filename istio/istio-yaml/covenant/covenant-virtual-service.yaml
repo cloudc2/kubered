@@ -1,0 +1,17 @@
+Version: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: covenant-virtual-service
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - covenant-gateway
+  tcp:
+    - match:
+        - port: 443
+      route:
+        - destination:
+            host: covenant1-service
+            port:
+              number: 443
