@@ -1,0 +1,13 @@
+namespace: default
+
+image:
+  repository: larrysuto/covenant
+  tag: cov-01
+  pullPolicy: Always
+
+
+service:
+   type: ClusterIP
+   adminPort: 7443
+   listener1: 80
+   listener2: 443 
