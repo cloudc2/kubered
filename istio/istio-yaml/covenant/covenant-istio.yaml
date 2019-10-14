@@ -35,7 +35,7 @@ metadata:
   name: covenant-virtualservice
 spec:
   hosts:
-    - "*"
+    - "covenant1.ccco.net"
   gateways:
     - covenantgateway
   http:
