@@ -1,0 +1,67 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: covenantgateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default ingress gateway
+  servers:
+    - port:
+        number: 80
+        name: listener1
+        protocol: HTTP
+      hosts:
+        - "covenant1.cccco.net"
+    - port:
+        number: 443
+        name: listener2
+        protocol: TLS
+      tls:
+        mode: PASSTHROUGH
+      hosts:
+        - "covenant1.cccco.net"
+    - port:
+        number: 7443
+        name: admin
+        protocol: TLS
+      tls:
+        mode: PASSTHROUGH
+      hosts:
+        - "covenant1.ccco.net"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: covenant-virtualservice
+spec:
+  hosts:
+    - "*"
+  gateways:
+    - covenantgateway
+  http:
+    - match:
+        - port: 80
+      route:
+        - destination:
+            host: covenant1-service
+            port:
+              number: 80
+  tls:
+    - match:
+        - port: 443
+          sni_hosts:
+            - "covenant1.cccco.net"
+      route:
+        - destination:
+            host: covenant1-service
+            port:
+              number: 443
+    - match:
+        - port: 7443
+          sni_hosts:
+            - "covenant1.cccco.net"
+      route:
+        - destination:
+            host: covenant1-service
+            port:
+              number: 7443
